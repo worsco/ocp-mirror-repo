@@ -19,7 +19,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: mirror-repo
-          image: 'registry.access.redhat.com/ubi8'
+          image: 'registry.access.redhat.com/ubi8:latest'
           command:
             - /bin/bash
           args:
@@ -39,7 +39,7 @@ spec:
             - name: mirror-repo
               mountPath: /var/www/html
         - name: apache
-          image: registry.redhat.io/rhscl/httpd-24-rhel7
+          image: 'registry.redhat.io/rhscl/httpd-24-rhel7:latest'
           volumeMounts:
             - name: mirror-repo
               mountPath: /var/www/html

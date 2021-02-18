@@ -7,9 +7,10 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: 80
+      targetPort: {{ .Values.service.port }}
       protocol: TCP
       name: http
   selector:
-    {{- include "ocp-mirror-repo.selectorLabels" . | nindent 4 }}
+    app: mirror-repo
+
