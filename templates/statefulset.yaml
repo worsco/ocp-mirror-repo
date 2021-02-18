@@ -13,7 +13,9 @@ spec:
       labels:
         app: mirror-repo
     spec:
-      serviceAccount: mirror-repo
+      {{ if .Values.serviceAccount.create -}}
+      serviceAccount: {{ include "ocp-mirror-repo.serviceAccountName" . }}
+      {{- end }}
       terminationGracePeriodSeconds: 10
       containers:
         - name: mirror-repo
