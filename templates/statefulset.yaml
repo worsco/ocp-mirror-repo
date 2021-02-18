@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mirror-repo
+spec:
+  serviceName: mirror-repo
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mirror-repo
+  template:
+    metadata:
+      labels:
+        app: mirror-repo
+    spec:
+      serviceAccount: mirror-repo
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: mirror-repo
+          image: 'registry.access.redhat.com/ubi8'
+          command:
+            - /bin/bash
+          args:
+            - /scripts-dir/run-mirror-repo.sh
+          env:
+            - name: RHEL_VERSION
+              value: '{{.Values.pod_envs.RHEL_VERSION}}'
+            - name: OPENSHIFT_VERSION
+              value: '{{.Values.pod_envs.OPENSHIFT_VERSION}}'
+          volumeMounts:
+            - name: rhsm-entitlement
+              mountPath: /etc/pki/entitlement
+              readOnly: true
+            - name: scripts-vol
+              mountPath: /scripts-dir
+              readOnly: true
+            - name: mirror-repo
+              mountPath: /var/www/html
+        - name: apache
+          image: registry.redhat.io/rhscl/httpd-24-rhel7
+          volumeMounts:
+            - name: mirror-repo
+              mountPath: /var/www/html
+              readOnly: true
+      volumes:
+        - name: rhsm-entitlement
+          secret:
+            secretName: rhsm-entitlement
+        - name: scripts-vol
+          configMap:
+            name: scripts-mirror-repo
+            defaultMode: 420
+  volumeClaimTemplates:
+    - metadata:
+        name: mirror-repo
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 40Gi
