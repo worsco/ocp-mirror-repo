@@ -61,6 +61,16 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 60
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 1
+            exec:
+              command:
+                - cat
+                - /var/www/html/repodata/repomd.xml
       volumes:
         {{- if eq .Values.entitlement.type "pod" }}
         - name: rhsm-entitlement
