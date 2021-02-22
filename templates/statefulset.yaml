@@ -4,7 +4,7 @@ metadata:
   name: mirror-repo
 spec:
   serviceName: mirror-repo
-  replicas: 1
+  replicas: {{ .Values.statefulset.replicas }}
   selector:
     matchLabels:
       app: mirror-repo
@@ -13,41 +13,60 @@ spec:
       labels:
         app: mirror-repo
     spec:
-      {{ if .Values.serviceAccount.create -}}
+      {{- if .Values.serviceAccount.create }}
       serviceAccount: {{ include "ocp-mirror-repo.serviceAccountName" . }}
       {{- end }}
       terminationGracePeriodSeconds: 10
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - mirror-repo
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: mirror-repo
-          image: 'registry.access.redhat.com/ubi8:latest'
+          image: '{{ .Values.images.ubi8 }}'
           command:
             - /bin/bash
           args:
             - /scripts-dir/run-mirror-repo.sh
           env:
             - name: RHEL_VERSION
-              value: '{{.Values.pod_envs.RHEL_VERSION}}'
+              value: '{{ .Values.pod_envs.RHEL_VERSION }}'
             - name: OPENSHIFT_VERSION
-              value: '{{.Values.pod_envs.OPENSHIFT_VERSION}}'
+              value: '{{ .Values.pod_envs.OPENSHIFT_VERSION }}'
           volumeMounts:
+            {{- if eq .Values.entitlement.type "pod" }}
             - name: rhsm-entitlement
               mountPath: /etc/pki/entitlement
               readOnly: true
+            {{- end }}
             - name: scripts-vol
               mountPath: /scripts-dir
               readOnly: true
             - name: mirror-repo
               mountPath: /var/www/html
         - name: apache
-          image: 'registry.redhat.io/rhscl/httpd-24-rhel7:latest'
+          image: '{{ .Values.images.httpd }}'
           volumeMounts:
             - name: mirror-repo
               mountPath: /var/www/html
               readOnly: true
+          ports:
+            - containerPort: 8080
+              protocol: TCP
       volumes:
+        {{- if eq .Values.entitlement.type "pod" }}
         - name: rhsm-entitlement
           secret:
             secretName: rhsm-entitlement
+        {{- end }}
         - name: scripts-vol
           configMap:
             name: scripts-mirror-repo

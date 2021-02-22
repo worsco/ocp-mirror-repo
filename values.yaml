@@ -2,9 +2,20 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+entitlement:
+  # Should be "node" or "pod"
+  # node means the entitlement is on the node via cluster-entitlement
+  # pod means that the entitlement is used within the pod
+  type: pod
+
+images:
+  ubi8: 'registry.access.redhat.com/ubi8:latest'
+  httpd: 'registry.redhat.io/rhscl/httpd-24-rhel7:latest'
+
 pod_envs:
-   RHEL_VERSION: '8.2'
-   OPENSHIFT_VERSION: '4.5'
+  # TODO Automate this, perhaps pod should figure this out?
+  RHEL_VERSION: '8.2'
+  OPENSHIFT_VERSION: '4.5'
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -32,18 +43,8 @@ service:
   type: ClusterIP
   port: 8080
 
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths: []
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+statefulset:
+  replicas: 2
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
