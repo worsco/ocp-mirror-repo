@@ -36,7 +36,7 @@ do
 echo "Start RPM repo mirroring"
 #dnf reposync --releasever=${RHEL_VERSION} -n -m --download-path=/var/www/html --repoid=rhocp-${OPENSHIFT_VERSION}-for-rhel-8-x86_64-rpms
 dnf reposync --releasever=${RHEL_VERSION} -m --download-path=/var/www/html --repoid=rhel-8-for-x86_64-baseos-eus-rpms
-#dnf reposync --releasever=${RHEL_VERSION} -n -m --download-path=/var/www/html --repoid=rhel-8-for-x86_64-baseos-rpms
+dnf reposync --releasever=${RHEL_VERSION} -n -m --download-path=/var/www/html --repoid=rhel-8-for-x86_64-baseos-rpms
 #dnf reposync --releasever=${RHEL_VERSION} -n -m --download-path=/var/www/html --repoid=rhel-8-for-x86_64-appstream-rpms
 #dnf reposync --releasever=${RHEL_VERSION} -n -m --download-path=/var/www/html --repoid=rhel-8-for-x86_64-supplementary-rpms
 #dnf reposync --releasever=${RHEL_VERSION} -n -m --download-path=/var/www/html --repoid=codeready-builder-for-rhel-8-x86_64-rpms
