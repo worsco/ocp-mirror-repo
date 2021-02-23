@@ -3,7 +3,8 @@
 This repo contains a helm chart to create a mirrored repository to 
 support the mirroring & caching of RPMs to build the driver for
 the gpu-operator. Periodically, the repos at cdn.redhat.com are
-not available at time of building the gpu driver.
+not available at time of building the gpu driver.  This internally
+hosted repository provides high availability.
 
 ## Prerequisites
 
