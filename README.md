@@ -16,7 +16,8 @@ not available at time of building the gpu driver.
 
 
 [1] https://github.com/NVIDIA/gpu-operator/blob/85f0d1972a2402d549db99d536e85a7fd57bd4b1/deployments/gpu-operator/values.yaml#L64
-You need to configure "configMapName" and "destintationDir".  configMapName as `repo-config` and destinationDir as `/etc/yum.repos.d`.
+
+In the link above, configure "configMapName" and "destintationDir".  configMapName as `repo-config` and destinationDir as `/etc/yum.repos.d`.
 
 ## Download entitlement
 
