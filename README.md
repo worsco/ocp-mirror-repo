@@ -9,10 +9,14 @@ not available at time of building the gpu driver.
 
 * entitlement certificate and key in .pem format
 * you have connectivity to cdn.redhat.com from within the cluster
-* worker nodes must be configured to use pod-based entitlements
+* the cluster can be either cluster-entitled or pod entitlements
 * the helm chart is deployed into gpu-operator-resources
-* the gpu-operator is configured to use the service (httpd) as
-  the repo
+* the gpu-operator is configured to use the service (mirror-repo) as
+  the RPM repo [1]
+
+
+[1] https://github.com/NVIDIA/gpu-operator/blob/85f0d1972a2402d549db99d536e85a7fd57bd4b1/deployments/gpu-operator/values.yaml#L64
+You need to configure "configMapName" and "destintationDir".  configMapName as `repo-config` and destinationDir as `/etc/yum.repos.d`.
 
 ## Download entitlement
 
