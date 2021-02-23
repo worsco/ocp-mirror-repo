@@ -20,6 +20,8 @@ You need to configure "configMapName" and "destintationDir".  configMapName as `
 
 ## Download entitlement
 
+TBD
+
 ## Enable entitled builds on OpenShift with a pod in a namespace
 
 https://www.openshift.com/blog/how-to-use-entitled-image-builds-to-build-drivercontainers-with-ubi-on-openshift
@@ -56,5 +58,4 @@ To validate that the change was successful, you can `oc debug node/<worker>`
 and `cat /host/etc/containers/mounts.conf`.  After a successful rollout, 
 the file should exist and be empty.  In a failed MachineConfig rollout, 
 the file would not exist.
-
 
