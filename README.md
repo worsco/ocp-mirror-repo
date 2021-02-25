@@ -6,6 +6,10 @@ the gpu-operator. Periodically, the repos at cdn.redhat.com are
 not available at time of building the gpu driver.  This internally
 hosted repository provides high availability.
 
+## Architecture Diagram
+
+![Architecture Diagram](ocp-mirror-repo-diagram.png "Architecture Diagram")
+
 ## Prerequisites
 
 * entitlement certificate and key in .pem format
