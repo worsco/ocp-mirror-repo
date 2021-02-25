@@ -6,6 +6,7 @@ metadata:
     {{- include "ocp-mirror-repo.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
+  sessionAffinity: ClientIP
   ports:
     - port: 80
       targetPort: {{ .Values.service.port }}
